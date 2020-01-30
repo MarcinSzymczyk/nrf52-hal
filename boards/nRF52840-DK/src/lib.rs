@@ -497,6 +497,18 @@ pub struct Leds {
     pub led_4: Led,
 }
 
+impl Leds {
+    pub fn index(&mut self, idx: u8) -> Option<&mut Led> {
+        match idx {
+            0 => Some(self.led_1.take()),
+            1 => Some(self.led_2.take()),
+            2 => Some(self.led_3.take()),
+            3 => Some(self.led_4.take()),
+            _ => None,
+        }
+    }
+}
+
 /// An LED on the nRF52840-DK board
 pub struct Led(Pin<Output<PushPull>>);
 
@@ -513,6 +525,10 @@ impl Led {
     /// Disable the LED
     pub fn disable(&mut self) {
         self.0.set_high().unwrap()
+    }
+
+    pub fn take(&mut self) -> &mut Self {
+        self
     }
 }
 
